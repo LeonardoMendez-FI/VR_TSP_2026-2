@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using JetBrains.Annotations;
 
 public class EventUiScript : MonoBehaviour {
 
@@ -21,6 +22,7 @@ public class EventUiScript : MonoBehaviour {
     void Start() {
 
         UpdateVisibility();
+        UpdateText();
 
     }
 
@@ -43,9 +45,18 @@ public class EventUiScript : MonoBehaviour {
 
     // Metodo para actualizar texto
 
-    public void updateText() {
+    public void UpdateText() {
 
+        if (messages.Count > 0 && text != null) {
+            text.text = messages[currentIndex];
+        }
 
+    }
+
+    public void CycleText(int dir_step) {
+
+        currentIndex = (currentIndex + dir_step + instructions.Count) % instructions.Count;
+        UpdateText();
 
     }
 
@@ -62,7 +73,7 @@ public class EventUiScript : MonoBehaviour {
     // Metodo para cambiar entre paneles
     public void CycleObjects(int dir_step){ 
 
-        currentIndex = (currentIndex + dir_step) % instructions.Count;
+        currentIndex = (currentIndex + dir_step + instructions.Count) % instructions.Count;
         UpdateVisibility();
 
     }
@@ -77,4 +88,10 @@ public class EventUiScript : MonoBehaviour {
         SceneManager.LoadScene(sceneName);
     }
 
+    public void ReloadCurrentScene() {
+
+        Scene currentScene = SceneManager.GetActiveScene();
+        ChangeSceneByIndex(currentScene.buildIndex);
+
+    }
 }
