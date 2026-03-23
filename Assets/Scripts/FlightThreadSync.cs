@@ -3,9 +3,11 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.IO;
+using NUnit.Framework.Internal.Execution;
 
-public class FlightThreadAsync : MonoBehaviour
-{
+public class FlightThreadSync : MonoBehaviour {
+
+    #region Variable Declaration
 
     public float speed = 50f;
     public float rotationSpeed;
@@ -27,8 +29,13 @@ public class FlightThreadAsync : MonoBehaviour
 
     // Controller flags above reading
     public bool read = false;
+    public bool write = false;
+    private object filelock = new object();
+
+    //Path to save the file
     public string filepath;
 
+    #endregion
 
     // Method to move the spaceship
     public void OnMovement(InputValue value) {
@@ -80,10 +87,15 @@ public class FlightThreadAsync : MonoBehaviour
         float yaw = movementInput.x * rotationSpeed * Time.deltaTime;
         this.transform.Rotate(0, yaw, 0);
 
-        // ACTIVITY 3: Method to write in file
+        // ACTIVITY 3: Sync the threads
         // File writing
 
-        TryReadFile();
+        if(write && !read) {
+
+            TryReadFile();
+            read = true;
+
+        }
 
     }
 
@@ -112,17 +124,24 @@ public class FlightThreadAsync : MonoBehaviour
         //Signal in console 
         Debug.Log("Iniciando simulación de turbulencia...");
 
-        //File wirting
+        Debug.Log("Escribiendo el archivo...");
+        // ACTIVITY 3: Method to write in the file
 
-        using (StreamWriter writer = new StreamWriter(filepath, false)){
+        lock (filelock) {
 
-            foreach (var force in turbulenceForces) {
+            //File wirting
 
-                writer.WriteLine(force.ToString());
+            using (StreamWriter writer = new StreamWriter(filepath, false)) {
+
+                foreach (var force in turbulenceForces) {
+
+                    writer.WriteLine(force.ToString());
+
+                }
+
+                writer.Flush();
 
             }
-
-            writer.Flush();
 
         }
 
@@ -131,6 +150,7 @@ public class FlightThreadAsync : MonoBehaviour
         // Simulation completed
 
         isTurbulenceRunning = false;
+        write = true;
 
     }
 
@@ -138,10 +158,22 @@ public class FlightThreadAsync : MonoBehaviour
 
         try {
 
-            string content = File.ReadAllText(filepath);
-            Debug.Log("Archivo leido..." + content);
+            lock (filelock) {
 
-        } catch(IOException ex){
+                if (File.Exists(filepath)){
+
+                    string content = File.ReadAllText(filepath);
+                    Debug.Log("Archivo leido..." + content);
+
+                } else {
+
+                    Debug.LogError("Ocurrió un problema...");
+                }
+
+
+            }
+
+        } catch (IOException ex) {
 
             Debug.LogError("Error de acceso al archivo..." + ex.Message);
 
