@@ -692,6 +692,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8112921285308865003, guid: 4ab2fc4928ff37746b26b549008cd60d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1261532014}
+    - targetCorrespondingSourceObject: {fileID: 8112921285308865003, guid: 4ab2fc4928ff37746b26b549008cd60d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1261532015}
+    - targetCorrespondingSourceObject: {fileID: 8112921285308865003, guid: 4ab2fc4928ff37746b26b549008cd60d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1261532016}
   m_SourcePrefab: {fileID: 100100000, guid: 4ab2fc4928ff37746b26b549008cd60d, type: 3}
 --- !u!1 &1261532008 stripped
 GameObject:
@@ -805,7 +811,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1261532008}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b40553845a922b46b3960bd7a6b955a, type: 3}
   m_Name: 
@@ -815,6 +821,45 @@ MonoBehaviour:
   cameraTransform: {fileID: 1079993028}
   movementInput: {x: 0, y: 0}
   turbulenceIterations: 100000
+--- !u!114 &1261532015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261532008}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16af0c185252ee24ab2942033cbf0344, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 50
+  rotationSpeed: 0
+  cameraTransform: {fileID: 1079993028}
+  movementInput: {x: 0, y: 0}
+  turbulenceIterations: 100000
+  read: 0
+  filepath: 
+--- !u!114 &1261532016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261532008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c209e8aa1ffe7645a4278dec1c67767, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 50
+  rotationSpeed: 0
+  cameraTransform: {fileID: 1079993028}
+  movementInput: {x: 0, y: 0}
+  turbulenceIterations: 100000
+  read: 0
+  write: 0
+  filepath: 
 --- !u!1001 &1475717433
 PrefabInstance:
   m_ObjectHideFlags: 0
