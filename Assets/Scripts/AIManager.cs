@@ -39,6 +39,8 @@ public class AIManager : MonoBehaviour
         detectionRangePow = detectionRange * detectionRange;
         exitRangePow = Mathf.Pow(exitRange, 2);
         minDistancePow = Mathf.Pow(minDistanceFromEntrance, 2);
+
+        FindAllEnemies();
         
     }
 
@@ -57,18 +59,34 @@ public class AIManager : MonoBehaviour
             if(!agent.enabled) continue;
 
             if ((agent.transform.position - playerPos).sqrMagnitude < detectionRangePow) {
-
+                playerCaught = true; 
+                break;
             }
 
-        playerCaught = true;
-
         }
+
+        // The player was caught
+        if (playerCaught) {
+            TeleportPlayerToEntrance();
+            RelocateAllNPC();
+        }
+
+        //Player at the EXIT
+        if ((playerPos - exit.position).sqrMagnitude < exitRangePow) {
+            gameWon = true;
+            Debug.Log("Felicidades, ganaste!!!");
+        }
+
+        // Running to player
+        foreach(var agent in agents)
+            if (!agent.enabled && !agent.isStopped)
+                agent.SetDestination(playerPos);
         
     }
 
     // Method to move the player at the entrance
 
-    void TeleportPlayerEntrance(){
+    void TeleportPlayerToEntrance(){
 
         var cc = player.GetComponent<NavMeshAgent>();
 
